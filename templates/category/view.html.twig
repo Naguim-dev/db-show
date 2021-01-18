@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	DB Show
+{% endblock %}
+
+{% block body %}
+	<div class="jumbotron text-black bg-white mb-0">
+			<div class="col-md-12 px-0">
+				<h2 class="text-center text-uppercase font-weight-bold">Catégorie {{ category.label }}</h2>
+				{% if is_granted('ROLE_TVSHOW_ADMIN') %}
+					<div class="row justify-content-end" style="text-align:right; margin-right:20px">
+						<a href="{{ path('tv_show_add') }}" class="primary">Ajouter une série</a>
+					</div>
+				{% endif %}
+			</div>
+	</div>
+
+	
+
+	<main role="main" class="container">
+		<div class="row">
+						<!-- /.filter-side -->
+			{% include "partials/_filter.html.twig" %}
+			<!-- / filter-side -->
+			<div class="col-md-9 blog-main">
+				
+
+					{# <div class="row mx-0">
+					            <div class="col-12 text-center pb-4 pt-4">
+					                <a href="#" class="btn_mange_pagging"><i class="fa fa-long-arrow-left"></i>&nbsp;&nbsp; Previous</a>
+					                <a href="#" class="btn_pagging">1</a>
+					                <a href="#" class="btn_pagging">2</a>
+					                <a href="#" class="btn_pagging">3</a>
+					                <a href="#" class="btn_pagging">...</a>
+					                <a href="#" class="btn_mange_pagging">Next <i class="fa fa-long-arrow-right"></i>&nbsp;&nbsp; </a>
+					             </div>
+					        </div> #}
+					{% for tvShow in category.tvShows %}	
+					<div class="card mb-3 border-0">
+						<div class="row no-gutters">
+							<div class="col-12">
+								<div class="card-body">
+
+								<a href="{{ path('tv_show_view', { 'id' : tvShow.id }) }}">
+								<img src="{{ tvShow.poster }}" width="150" alt="Avatar" class="img-thumbnail float-left pull-left mr-3 border-0" >
+								</a>
+
+
+									<h5 class="card-title font-weight-bold"><a href="{{ path('tv_show_view', { 'id' : tvShow.id }) }}" class="link">{{ tvShow.title }}</a></h5>
+									<p class="blog-post-meta">Première diffusion :
+											{{ tvShow.releaseDate | date('d-m-Y')}}
+											/
+											{% for category in tvShow.categories %}
+												<a href="{{ path('category_view', { 'id' : category.id }) }}">{{ category.label }}</a>,
+											{% endfor %}
+										</p>
+									<p>Avec : 
+											
+										</p>
+									<p class="card-text">{{ tvShow.synopsis }}</p>
+									<p class="card-text">
+										<small class="text-muted">Last updated 3 mins ago</small>
+									</p>
+
+								</div>
+							</div>
+							
+						</div>
+						
+					</div>
+					{% else %}
+						<p>Il n'y a pas encore de série pour cette catégorie.</p>
+					{% endfor %}
+				</div>
+
+			</div>
+
+
+		</div>
+{% endblock %}

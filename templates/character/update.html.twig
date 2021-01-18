@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">Modifier un personnage</h2>
+			{% if is_granted('ROLE_TVSHOW_ADMIN') %}
+				<div class="row justify-content-end" style="text-align:right; margin-right:20px">
+					<a onClick="return confirm('Confirmez la suppression')" href="{{ path('character_delete', {id: character.id })}}" class="btn btn-danger">Supprimer</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{# 
+{{ form(tvShowForm) }} <form> <input ...> </form>
+#}
+
+{# https://symfony.com/doc/current/form/form_customization.html#form-functions-and-variables-reference #}
+
+
+{{ form_start(characterForm) }} {# <form method=""post"> #}
+    
+     {{ form_widget(characterForm) }}
+
+
+    <input type="submit" value="Modifier" class="btn btn-primary">
+{{ form_end(characterForm) }} {# </form> #}
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ShowController!{% endblock %}
+
+{% block body %}
+<div class="tab-content" id="myTabContent">
+<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+<h1>{{ welcomeMessage }} sur DB show</h1>
+<p>{{ slugText }}</p>
+</div>
+</div>
+{% endblock %}

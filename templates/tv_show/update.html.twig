@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">Modifier une série</h2>
+			{% if is_granted('ROLE_TVSHOW_ADMIN') %}
+				<div class="row justify-content-end" style="text-align:right; margin-right:20px">
+					<a onClick="return confirm('Confirmez la suppression')" href="{{ path('tv_show_delete', {id: tvShow.id })}}" class="btn btn-danger">Supprimer</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{# 
+{{ form(tvShowForm) }} <form> <input ...> </form>
+#}
+
+{# https://symfony.com/doc/current/form/form_customization.html#form-functions-and-variables-reference #}
+
+
+{{ form_start(tvShowForm) }} {# <form method=""post"> #}
+    
+    {# form_widget(tvShowForm) permet d'afficher tout les champs du formulaire d'un coup #}
+
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form_row(tvShowForm.title) }}
+            {{ form_row(tvShowForm.releaseDate) }}
+            {{ form_row(tvShowForm.categories) }}
+        </div>
+        <div class="col-sm-6">
+            {{ form_row(tvShowForm.synopsis) }}
+            {{ form_row(tvShowForm.directedBy) }}
+            {{ form_row(tvShowForm.poster) }}
+        </div>
+    </div>
+    
+
+    <input type="submit" value="Modifier" class="btn btn-primary">
+{{ form_end(tvShowForm) }} {# </form> #}
+
+{% endblock %}

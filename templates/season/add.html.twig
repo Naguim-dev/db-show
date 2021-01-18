@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">Ajouter une saison</h2>
+		</div>
+	</div>
+
+{# 
+{{ form(tvShowForm) }} <form> <input ...> </form>
+#}
+
+{# https://symfony.com/doc/current/form/form_customization.html#form-functions-and-variables-reference #}
+{{ form_start(seasonForm) }} {# <form method=""post"> #}
+
+    {{ form_row(seasonForm.number) }}
+    {{ form_row(seasonForm.year) }}
+
+<div class="tags row"
+            data-prototype="{{ form_widget(seasonForm.episodes.vars.prototype)|e('html_attr') }}"
+            data-index="{{ seasonForm.episodes|length }}"
+        ></div>
+
+<hr />
+<input type="submit" value="Ajouter" class="btn btn-primary">
+{{ form_end(seasonForm) }} {# </form> #}
+
+{% endblock %}
+
+{% block javascripts %}
+
+
+    <script>
+        // setup an "add a tag" link
+var $addTagLink = $('<div class="row"><a href="#" class="add_tag_link m-4"><span class="fa fa-plus-circle"></span> Ajouter un episode</a></div>');
+var $newLinkLi = $('<p></p>').append($addTagLink);
+
+jQuery(document).ready(function() {
+    // Get the div that holds the collection of tags
+   var $collectionHolder = $('div.tags');
+    
+    // add the "add a tag" anchor and p to the tags div
+    $collectionHolder.append($newLinkLi);
+    
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    $collectionHolder.data('index', $collectionHolder.find(':input').length);
+    
+    $addTagLink.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+        
+        // add a new tag form (see code block below)
+        addTagForm($collectionHolder, $newLinkLi);
+    });
+    
+    
+});
+
+function addTagForm($collectionHolder, $newLinkLi) {
+    // Get the data-prototype explained earlier
+    var prototype = $collectionHolder.data('prototype');
+    
+    // get the new index
+    var index = $collectionHolder.data('index');
+    
+    // Replace '$$name$$' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    var newForm = prototype.replace(/__name__/g, index);
+    
+    // increase the index with one for the next item
+    $collectionHolder.data('index', index + 1);
+    
+    // Display the form in the page in an p, before the "Add a tag" link p
+    var $newFormLi = $('<div class="col-sm-6 border p-2 mt-3"><a href="#" class="remove-tag"><span class="fa fa-window-close"></span> Suppr.</a></div>').append(newForm);
+    
+    // also add a remove button, just for this example
+    
+    $newLinkLi.before($newFormLi);
+    
+    // handle the removal, just for this example
+    $('.remove-tag').click(function(e) {
+        e.preventDefault();
+        
+        $(this).parent().remove();
+        
+        return false;
+    });
+}
+    </script>
+
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	DB Show
+{% endblock %}
+
+{% block body %}
+	<div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">{{ tvShow.title }}</h2>
+			{% if is_granted('ROLE_TVSHOW_ADMIN') %}
+				<div class="row justify-content-end" style="text-align:right; margin-right:20px">
+					<a href="{{ path('tv_show_update', {id:tvShow.id}) }}" class="link_admin">Modifier</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+	
+
+<div class="tab-content border-0">
+	  {% set tab1="Home" %}
+      {% set idTab1="home" %}
+      {% set tab2="Saisons et épisodes" %}
+      {% set idTab2="seasons" %}
+      {% set tab3="Casting" %} 
+      {% set idTab3="cast" %} 
+      {% include "partials/_submenu.html.twig" %}
+    <div id="home" class="container tab-pane active "><br>
+        <div class="row no-gutters">
+               
+          <div class="col-md-2 mt-3">         
+            <img src="{{ tvShow.poster }}" class="img-thumbnail border-0" width="150" alt="Avatar">
+          </div>
+          <div class="col-md-10">
+                   
+            <div class="card-body">
+            <p class="blog-post-meta">
+			{% if tvShow.releaseDate is not empty %}
+			Première diffusion : {{ tvShow.releaseDate | date('d-m-Y')}}
+			{% endif %}
+			 /  
+                {% for category in tvShow.categories %}
+                <a href="{{ path('category_view', { 'id' : category.id }) }}">{{ category.label }}</a>, 
+                {% endfor %}<br />
+                {% if tvShow.directedBy is not empty %}
+                <span class="text-muted">De</span> <a href="">{{ tvShow.directedBy.fullName }}</a>
+                {% endif %}
+                <br />
+                <span class="text-muted">Avec :</span> 
+                {% for character in tvShow.characters %}
+                {% if not loop.first %},
+                {% endif %}
+                {% if character.actors is not empty %}
+                {% for actor in character.actors %}
+                <a href="" class="text-dark">{{ actor.firstName }} {{ actor.lastName }}</a>
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+                </p>
+                <hr>
+            <h4 class="text-uppercase font-weight-bold">Synopsis</h4>
+            <p>{{ tvShow.synopsis }}</p>
+             
+            </div>
+            <div class="row mb-3">        
+              <div class="col-md-6 border text-center">       
+              <h2>{{ tvShow.seasons | length }}</h2> 
+              <p>Saisons</p>  
+              </div>
+              <div class="col-md-6 border text-center">  
+              <h2>-</h2> 
+              <p>Episodes</p>  
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+	<div id="seasons" class="container tab-pane fade"><br>
+							<div class="d-flex flex-row justify-content-between my-4">
+								<h2 class="text-uppercase font-weight-bold">Saisons</h2>
+								{% if is_granted('ROLE_ADMIN') %}
+									<div>
+										<a href="{{ path('season_add', {'id': tvShow.id}) }}" class="link_admin">Ajouter une saison</a>
+									</div>
+								{% endif %}
+							</div>
+
+							{% for season in tvShow.seasons %}
+								{% if not loop.first %}
+									<hr>
+								{% endif %}
+								<div class="media">
+									<div class="media-body">
+										<h4 class="mt-0 font-weight-bold">
+											Saison
+											{{ season.number }}
+											({{ season.year }})
+										</h4>
+										<p class="text-muted">{{ season.episodes | length }} episode(s) diffusé(s)</p>
+										{% if is_granted('ROLE_ADMIN') %}
+											<p>
+												<a href="{{ path('season_update', {'id': season.id}) }}" class="link_admin">
+													Modifier la saison
+													{{ season.number }}
+												</a>
+											</p>
+										{% endif %}
+										<ul class="list-unstyled">
+											{% for episode in season.episodes %}
+												<li>
+												{% if season.number < 10 %}
+												S0{{ season.number }}
+												{% else %}
+												S{{ season.number }}
+												{% endif %}
+												{% if episode.number < 10 %}
+												E0{{ episode.number }}
+												{% else %}
+												E{{ episode.number }}
+												{% endif %}
+													-
+													{{ episode.title }}
+												</li>
+											{% endfor %}
+										</ul>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+						<div id="cast" class="container tab-pane fade"><br>
+
+							<div class="d-flex flex-row justify-content-between my-4">
+								<h4 class="text-uppercase font-weight-bold">Acteurs et actrices</h4>
+								{% if is_granted('ROLE_ADMIN') %}
+									<div>
+										<a href="{{ path('character_add', {'id': tvShow.id}) }}" class="link_admin">Ajouter un personnage</a> / <a href="{{ path('person_add', {'id': tvShow.id}) }}" class="link_admin">Ajouter un acteur</a>
+									</div>
+								{% endif %}
+							</div>
+							<div class="row">
+								{% for character in tvShow.characters %}
+									<div class="col-sm-3 text-center mt-3">
+										{% if character.pictureFilename is not empty %}
+											<img src="{{ asset('uploads/character/' ~ character.pictureFilename) }}" class="img-thumbnail" width="150">
+										{% endif %}
+										<div class="media-body">
+											<h6 class="mt-2">
+												{% if character.actors is not empty %}
+
+													{% for actor in character.actors %}
+														{{ actor.firstName }}
+														{{ actor.lastName }}
+														{% if is_granted('ROLE_ADMIN') %}
+														/ <a href="{{ path('person_update', {'id': actor.id}) }}" class="link_admin">Modifier</a>
+														{% endif %}
+													{% endfor %}
+
+												{% endif %}
+
+											</h6>
+											<p class="blog-post-meta" style="font-size:0.8rem">
+												Rôle :
+												{{ character.name }}
+												<br/>
+												{% if is_granted('ROLE_ADMIN') %}
+													<a href="{{ path('character_update', {'id': character.id}) }}" class="link_admin">
+														Modifier sa fiche
+													</a>
+												{% endif %}
+											</p>
+
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+
+	<p>
+
+{% endblock %}

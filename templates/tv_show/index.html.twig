@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TvshowAdminController!{% endblock %}
+
+{% block body %}
+<div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">Interface d'administration</h2>
+		</div>
+	</div>
+<main role="main" class="container">
+		<div class="row">	
+		{% include "partials/_filter_admin.html.twig" %}
+		<div class="col-md-9 blog-main">
+		<h3>Gérer les séries</h3>
+			<a href="{{ path("tv_show_add") }}" class="btn blue">Ajouter une série</a>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Titre</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for tvShow in tvShows %}            
+					<tr>
+						<td>{{ tvShow.id }}</td>
+						<td><a href="{{ path("tv_show_view", {id: tvShow.id}) }}">{{ tvShow.title }}</a></td>
+						<td class="text-left">
+							<a href="{{ path("tv_show_update", {id: tvShow.id}) }}" class="blue"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</a> / <a onClick="return confirm('Confirmez la suppression')" href="{{ path('tv_show_delete', {id: tvShow.id })}}" class="danger"><i class="fa fa-trash" aria-hidden="true"></i> Supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		</div>
+{% endblock %}

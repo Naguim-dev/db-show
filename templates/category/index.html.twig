@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TvshowAdminController!{% endblock %}
+
+{% block body %}
+<div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">Interface d'administration</h2>
+		</div>
+	</div>
+<main role="main" class="container">
+		<div class="row">	
+		{% include "partials/_filter_admin.html.twig" %}
+		<div class="col-md-9 blog-main">
+		<h3>Gérer les catégories</h3>
+			<a href="{{ path("category_add") }}" class="btn blue">Ajouter une catégorie</a>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Nom</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for category in categories %}            
+					<tr>
+						<td>{{ category.id }}</td>
+						<td>{{ category.label }}</td>
+						<td class="text-left">
+							<a href="{{ path("category_update", {id: category.id}) }}" class="blue"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</a> / <a onClick="return confirm('Confirmez la suppression')" href="{{ path('category_delete', {id: category.id })}}" class="danger"><i class="fa fa-trash" aria-hidden="true"></i> Supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		</div>
+{% endblock %}

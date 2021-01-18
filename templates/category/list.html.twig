@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	DB Show
+{% endblock %}
+
+{% block body %}
+	<h1>
+		Liste des catégories
+	</h1>
+
+	<div class="list-group">
+		{% for category in categories %}
+				<a href="{{ path('category_view', { id: category.id }) }}" class="list-group-item list-group-item-action">
+					{{ category.label }}
+				</a>
+        {% else %}
+            <p>Il n'y a pas encore de catégories.</p>  
+		{% endfor %}
+	</div>
+{% endblock %}

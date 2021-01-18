@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">Ajouter un personnage</h2>
+		</div>
+	</div>
+{# 
+{{ form(tvShowForm) }} <form> <input ...> </form>
+#}
+
+{# https://symfony.com/doc/current/form/form_customization.html#form-functions-and-variables-reference #}
+
+
+{{ form_start(characterForm) }} {# <form method=""post"> #}
+    
+    {{ form_row(characterForm.name) }}
+    {{ form_row(characterForm.actors) }} - <a href="{{ path('person_add') }}" class="link_admin">Ajouter un acteur/réalisateur</a> 
+
+    {{ form_row(characterForm.picture) }}
+
+
+    <input type="submit" value="Ajouter" class="btn btn-primary">
+{{ form_end(characterForm) }} {# </form> #}
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">Ajouter une catégorie</h2>
+		</div>
+	</div>
+
+{# 
+{{ form(tvShowForm) }} <form> <input ...> </form>
+#}
+
+{# https://symfony.com/doc/current/form/form_customization.html#form-functions-and-variables-reference #}
+
+
+{{ form_start(categoryForm) }} {# <form method=""post"> #}
+    
+    {{ form_row(categoryForm.label) }}
+
+    <input type="submit" value="Ajouter" class="btn btn-primary">
+{{ form_end(categoryForm) }} {# </form> #}
+
+{% endblock %}

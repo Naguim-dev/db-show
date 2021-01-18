@@ -1,0 +1,26 @@
+			<aside class="col-md-3 blog-sidebar">
+				<div class="pt-4">
+                    <div class="bloc_title">Filtres</div>
+					<p class="font-weight-bold">
+					<a class="primary" data-toggle="collapse"  href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+						Par genres 
+					</a></p>
+					
+				<div class="collapse show" id="collapseExample">
+                    {% if is_granted('ROLE_TVSHOW_ADMIN') %}
+					<p><a href="{{ path('category_add') }}" class="link_admin">Ajouter une catégorie</a></p>
+                    {% endif %}
+					<ol class="list-unstyled mb-0">
+						{% for category in categories %}
+							<li>
+								<span class="blog-post-meta"><a href="{{ path('category_view', { 'id' : category.id }) }}" class="link">{{ category.label }}</a> <span class="text-muted">({{ category.tvShows | length }})</span></span>
+							</li>
+						{% endfor %}
+					</ol>
+				</div>
+				</div>
+				<p role="separator" class="dropdown-divider"></p>
+				<div class="pt-1">
+					<p class="font-weight-bold">Par années</p>
+				</div>
+			</aside>
