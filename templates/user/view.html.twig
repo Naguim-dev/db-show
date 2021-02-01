@@ -7,7 +7,12 @@
 {% block body %}
 	<div class="jumbotron text-black bg-white mb-0">
 		<div class="col-md-12 px-0">
-			<h2 class="text-center text-uppercase font-weight-bold">{{ user.email }}</h2>
+			<h2 class="text-center text-uppercase font-weight-bold">Compte utilisateur</h2>
+			<p class="text-center">{{ user.firstName }}
+				{{ user.lastName }}
+				<a href="{{ path('user_update', {"id" : app.user.id}) }}">
+					Modifier mon compte</a>
+			</p>
 
 		</div>
 	</div>

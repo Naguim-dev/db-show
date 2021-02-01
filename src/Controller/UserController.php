@@ -99,4 +99,29 @@ class UserController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @Route("/{id}/update", name="user_update")
+     * @IsGranted("ROLE_USER")
+     */
+
+    public function update(User $user, Request $request)
+    {
+        $form = $this->createForm(UserCreateType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->flush();
+            $this->addFlash("success", "Votre profil a bien été mis à jour");
+            return $this->redirectToRoute("user_view", ["id" => $user->getId()]);
+        };
+
+        return $this->render(
+            'user/update_account.html.twig',
+            [
+                "userForm" => $form->createView(),
+                "user" => $user
+            ]
+        );
+    }
 }
