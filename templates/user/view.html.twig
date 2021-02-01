@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	DB Show
+{% endblock %}
+
+{% block body %}
+	<div class="jumbotron text-black bg-white mb-0">
+		<div class="col-md-12 px-0">
+			<h2 class="text-center text-uppercase font-weight-bold">{{ user.email }}</h2>
+
+		</div>
+	</div>
+
+
+	<div class="tab-content border-0">
+		{% set tab1="Mes informations" %}
+		{% set idTab1="infos" %}
+		{% set tab2="Mes séries coup de coeur" %}
+		{% set idTab2="likes" %}
+		{% set tab3="Séries à voir" %}
+		{% set idTab3="wishlist" %}
+		{% include "partials/_submenu.html.twig" %}
+		<div id="infos" class="container tab-pane active "><br>
+			<div class="row no-gutters">
+
+				<div class="col-md-2 mt-3">
+					<img src="http://www.automotiveone.com/wp-content/uploads/2019/02/placeholder-user-image.jpg" class="img-thumbnail border-0" width="150" alt="Avatar">
+				</div>
+				<div class="col-md-10">
+
+					<div class="card-body">
+						<p>
+							<span class="font-weight-bold">Email / Utilisateur :</span>
+							{{ user.email }}</p>
+						<p>
+							<span class="font-weight-bold">Mot de passe :</span>
+							******* -
+							<a href="{{ path('user_password_change') }}">Changer mon mot de passe</a>
+						</p>
+						<hr>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="likes" class="container tab-pane fade"><br>
+			<div class="d-flex flex-row justify-content-between my-4">
+				<h2 class="text-uppercase font-weight-bold">Mes séries "Coup de coeur"</h2>
+				<div>
+					<a href="">Ajouter un coup de coeur</a>
+				</div>
+			</div>
+		</div>
+		<div id="wishlist" class="container tab-pane fade"><br>
+
+			<div class="d-flex flex-row justify-content-between my-4">
+				<h2 class="text-uppercase font-weight-bold">Séries à voir</h2>
+				<div>
+					<a href="">Ajouter un coup de coeur</a>
+				</div>
+			</div>
+		</div>
+
+
+	{% endblock %}

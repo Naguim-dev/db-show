@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
-     * @Route("/tvshow")
-     */
+ * @Route("/tvshow")
+ */
 
 
 class TvShowController extends AbstractController
@@ -29,7 +29,7 @@ class TvShowController extends AbstractController
 
         $repository = $this->getDoctrine()->getRepository(TvShow::class)->findByTitle($search);
 
-    
+
         $tvShows = $paginator->paginate(
             $repository, // On passe les données
             $request->query->getInt('page', 1),
@@ -43,25 +43,23 @@ class TvShowController extends AbstractController
 
         return $this->render('tv_show/list.html.twig', [
             "tvShows" => $tvShows,
-             "categories" => $categories
-             ]);
+            "categories" => $categories
+        ]);
     }
 
 
     /**
-     * @Route("/{id}", name="tv_show_view", requirements={"id"="\d+"}))
+     * @Route("/{id}", name="tv_show_view", requirements={"id"="\d+"})
      */
     public function view($id) // ou view(TvShow $tvShow) et supprimer $repository = $this->getDoctrine()->->getRepository(TvShow::class); $tvShow = $repository->find($id);
     {
         /** @var tvShowRepository $repository */
         $repository = $this->getDoctrine()->getRepository(TvShow::class);
         $tvShow = $repository->findWithCollections($id);
-        
+
 
         return $this->render('tv_show/view.html.twig', [
             "tvShow" => $tvShow,
-            ]);
+        ]);
     }
- 
-
 }

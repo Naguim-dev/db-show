@@ -11,10 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-    /**
-     * @Route("/user")
-     * 
-     */
+/**
+ * @Route("/user")
+ * 
+ */
 
 class UserController extends AbstractController
 {
@@ -27,7 +27,7 @@ class UserController extends AbstractController
         $userForm = $this->createForm(UserCreateType::class, $user);
         $userForm->handleRequest($request);
 
-        if($userForm->isSubmitted() && $userForm->isValid()){
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
 
             $plainPassword = $userForm->get('password')->getData();
             $encodedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
@@ -44,7 +44,8 @@ class UserController extends AbstractController
             'user/create_account.html.twig',
             [
                 "userForm" => $userForm->createView()
-            ]);
+            ]
+        );
     }
 
     /**
@@ -52,34 +53,50 @@ class UserController extends AbstractController
      * @IsGranted("ROLE_USER")
      */
 
-     public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
-     {
+    public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
 
-         $user = $this->getUser();
-         $form = $this->createForm(UserPasswordUpdateType::class, $user);
-         $form->handleRequest($request);
+        $user = $this->getUser();
+        $form = $this->createForm(UserPasswordUpdateType::class, $user);
+        $form->handleRequest($request);
 
-         if($form->isSubmitted() && $form->isValid())
-         {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $plainPassword = $form->get('newPassword')->getData();
             $encodedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
             $user->setPassword($encodedPassword);
 
-             $manager = $this->getDoctrine()->getManager();
-             $manager->flush();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->flush();
 
             $this->addFlash("success", "Votre mot de passe a bien été modifié");
             return $this->redirectToRoute('homepage');
-         }
+        }
 
 
-         return $this->render(
-             'user/change_password.html.twig',
-             [
-                 "form" => $form->createView()
-             ]
-         );
-     }
+        return $this->render(
+            'user/change_password.html.twig',
+            [
+                "form" => $form->createView()
+            ]
+        );
+    }
 
+    /**
+     * @Route("/{id}", name="user_view", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_USER")
+     */
+
+    public function view($id)
+    {
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $user = $repository->find($id);
+
+        return $this->render(
+            'user/view.html.twig',
+            [
+                "user" => $user
+            ]
+        );
+    }
 }
