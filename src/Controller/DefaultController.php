@@ -25,17 +25,21 @@ class DefaultController extends AbstractController
      */
     public function homepage()
     {
-       
 
-        $welcomeMessage = $this->welcomeMessageGenerator->getRandomMessage();
+
+        /* $welcomeMessage = $this->welcomeMessageGenerator->getRandomMessage();
         $str = "Salut à toi !";
         $slugText = $this->sluggerMethod->sluggifyText($str);
+        */
+        return $this->redirectToRoute('tv_show_list');
 
         return $this->render(
-            'default/homepage.html.twig', 
-            [
+            'default/homepage.html.twig',
+            /* [
                 "welcomeMessage" => $welcomeMessage,
                 "slugText" => $slugText
-            ]);
+            ]
+            */
+        );
     }
 }
